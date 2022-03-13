@@ -1,0 +1,23 @@
+CREATE TABLE course (
+ id int NOT NULL,
+ title varchar(45) DEFAULT NULL,
+ instructor_id int DEFAULT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT course_title UNIQUE (title),
+  CONSTRAINT fk_instructor_id
+  FOREIGN KEY(instructor_id) REFERENCES instructor (id) on delete CASCADE
+  
+);
+
+CREATE SEQUENCE course_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER course_bir 
+BEFORE INSERT ON course 
+FOR EACH ROW
+
+BEGIN
+  SELECT course_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
+/
