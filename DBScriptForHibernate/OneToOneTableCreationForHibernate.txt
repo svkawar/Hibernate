@@ -1,0 +1,47 @@
+/*DROP TABLE instructor_detail;*/
+
+CREATE TABLE instructor_detail (
+ id int NOT NULL,
+ youtube_channel varchar(128) DEFAULT NULL,
+ hobby varchar(45) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE SEQUENCE instructor_detail_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER instructor_detail_bir 
+BEFORE INSERT ON instructor_detail 
+FOR EACH ROW
+
+BEGIN
+  SELECT instructor_detail_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
+/
+
+/*DROP TABLE instructor;*/
+
+CREATE TABLE instructor (
+ id int NOT NULL,
+ first_name varchar(45) DEFAULT NULL,
+ last_name varchar(45) DEFAULT NULL,
+ email varchar(45) DEFAULT NULL,
+ instructor_detail_id int DEFAULT NULL,
+  PRIMARY KEY (id), 
+  CONSTRAINT fk_instructor_detail_id
+  FOREIGN KEY(instructor_detail_id) REFERENCES instructor_detail (id) on delete CASCADE
+);
+
+CREATE SEQUENCE instructor_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER instructor_bir 
+BEFORE INSERT ON instructor 
+FOR EACH ROW
+
+BEGIN
+  SELECT instructor_seq.NEXTVAL
+  INTO   :new.id
+  FROM   dual;
+END;
+/
